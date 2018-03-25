@@ -2,6 +2,11 @@
 
 #include "StdAfx.h"
 
+enum EModuleGeomSlot {
+	GEOM_SLOT_1,
+	GEOM_SLOT_2
+};
+
 enum EBuildingType {
 
 	eBT_ApartmentBuilding
@@ -43,8 +48,8 @@ struct SProperties {
 	inline bool operator==(const SProperties &rhs) const { return 0 == memcmp(this, &rhs, sizeof(rhs)); }
 	inline bool operator!=(const SProperties &rhs) const { return 0 != memcmp(this, &rhs, sizeof(rhs)); }
 
-	float fWidth;
-	float fHeight;
+	int ModuleCountWidth;
+	int ModuleCountHeight;
 	bool bHasIndoor;
 	EBuildingVersion eBuildingVersion;
 	EBuildingType eBuildingType;
@@ -56,8 +61,8 @@ static void ReflectType(Schematyc::CTypeDesc<SProperties>& desc) {
 	desc.SetGUID("{225C5BDD-FDA2-4F88-B418-CECF704DA4A4}"_cry_guid);
 	desc.SetLabel("Module properties");
 	desc.SetDescription("Sets all of the different module properties");
-	desc.AddMember(&SProperties::fWidth, 'fwit', "Width", "Width", "Sets the width of the building", 0);
-	desc.AddMember(&SProperties::fHeight, 'fhei', "Height", "Height", "Sets the height of the building", 0);
+	desc.AddMember(&SProperties::ModuleCountWidth, 'mwit', "ModuleCountWidth", "ModuleCountWidth", "Sets the width of the building", 0);
+	desc.AddMember(&SProperties::ModuleCountHeight, 'mhei', "ModuleCountHeight", "ModuleCountHeight", "Sets the height of the building", 0);
 	desc.AddMember(&SProperties::bHasIndoor, 'bhi', "HasIndoor", "Has Indoor", "Sets whether the object should have indoor or not", false);
 	desc.AddMember(&SProperties::eBuildingVersion, 'ebv', "BuildingVersion", "Building Version", "Sets the building version", EBuildingVersion());
 	desc.AddMember(&SProperties::eBuildingType, 'ebt', "BuildingType", "Buildning Type", "Sets the buildings type", EBuildingType());
