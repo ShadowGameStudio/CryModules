@@ -2,11 +2,6 @@
 
 #include "StdAfx.h"
 
-enum EModuleGeomSlot {
-	GEOM_SLOT_1,
-	GEOM_SLOT_2
-};
-
 enum EBuildingType {
 
 	eBT_ApartmentBuilding

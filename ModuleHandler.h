@@ -30,9 +30,38 @@ public:
 	void LoadGeometry();
 	void Physicalize();
 
+	void SetHeight();
+	void SetWidth();
+
+	int GetRandom();
+
 	SProperties *GetProperties() { return &sProperties; }
 
 protected:
+
+	std::vector<string> Models = 
+	{ 
+		"Objects/Modules/apartment/wall_budge_window.cgf", 
+		"Objects/Modules/apartment/wall.cgf",
+		"Objects/Modules/apartment/wall_buldge.cgf",
+		"Objects/Modules/apartment/window_wide.cgf",
+		"Objects/Modules/apartment/window_thin.cgf",
+
+	};
+
+	std::vector<int> HeightVec = {};
+	std::vector<int> WidthVec = {};
+
+	Vec3 HeightOffset = Vec3(0, 0, 0);
+	Vec3 HeightLastOffset = Vec3(0, 0, 0);
+
+	Vec3 WidthOffset = Vec3(0, 0, 0);
+	Vec3 WidthLastOffset = Vec3(0, 0, 0);
+
+	int slotCount = 0;
+
+	int LastWidth = 0;
+	int LastHeight = 0;
 
 	SProperties sProperties;
 

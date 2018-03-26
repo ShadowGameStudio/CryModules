@@ -34,7 +34,7 @@ void CModuleComponent::ProcessEvent(const SEntityEvent & event) {
 	switch (event.event) {
 	case ENTITY_EVENT_EDITOR_PROPERTY_CHANGED:
 		{
-		
+
 		//When the editor properties has changed, reload the geom and physicalize it
 		LoadGeometry();
 		Physicalize();
@@ -57,16 +57,147 @@ void CModuleComponent::ReflectType(Schematyc::CTypeDesc<CModuleComponent>& desc)
 
 //Loads the geometry that is needed for the building
 void CModuleComponent::LoadGeometry() {
+	
+	if (GetHeight() != 0) {
+		
+		if (GetHeight() != LastHeight) {
+			
+			if (GetHeight() < LastHeight) {
 
-	string sGeomPath = "Objects/Default/primitive_sphere.cgf";
-	string sGeomPathT = "Objects/Default/primitive_cube.cgf";
+				//Get the slot to free(the last added)
+				int slot = HeightVec.back();
+				//Frees the slot
+				m_pEntity->FreeSlot(slot);
 
-	m_pEntity->LoadGeometry(GEOM_SLOT_1, sGeomPath);
-	m_pEntity->LoadGeometry(GEOM_SLOT_2, sGeomPathT);
+				//Remove the last added slot
+				HeightVec.erase(HeightVec.end());
+				//Set the last height to the current
+				LastHeight = GetHeight();
+
+			}
+			else {
+				
+				//Sets the height
+				SetHeight();
+
+			}
+
+
+		}
+	
+	}
+
+	if (GetWidth() != 0) {
+
+		if (GetWidth() != LastWidth) {
+			
+			if (GetWidth() < LastWidth) {
+
+				//Get the slot to free(the last added)
+				int slot = WidthVec.back();
+				//Frees the slot
+				m_pEntity->FreeSlot(slot);
+
+				//Remove the last added slot
+				WidthVec.erase(WidthVec.end());
+				//Set the last width to the current
+				LastWidth = GetWidth();
+
+			}
+			else {
+				
+				SetWidth();
+
+			}
+
+		}
+
+	}
 
 }
 
 //Physiscalizes the building
-void CModuleComponent::Physicalize() {}
+void CModuleComponent::Physicalize() {
+
+	SEntityPhysicalizeParams physParams;
+	physParams.type = PE_STATIC;
+	m_pEntity->Physicalize(physParams);
+
+}
+
+void CModuleComponent::SetHeight() {
+
+	//Set the offset to the last offset + three
+	HeightOffset = HeightLastOffset + Vec3(0, 0, 3);
+	//Create a matrix for the offset
+	Matrix34 maOffset = IDENTITY;
+	//Set teh offset
+	maOffset.SetTranslation(HeightOffset);
+	//Sets the string for the model location
+	string sModelPath = Models[GetRandom()];
+
+	//Create the slot int
+	int slot = 0;
+	//If the slot count is zero, continue
+	if (m_pEntity->GetSlotCount() == 0) {
+		//Set the slot to zero
+		slot = 0;
+
+	}
+	//Else if the slot is more than zero, continue
+	else {
+		//Set the slot to the slotcount plus one
+		slot = m_pEntity->GetSlotCount() + 1;
+	}
+
+	//Sets the model
+	m_pEntity->LoadGeometry(slot, sModelPath);
+	//Sets the slot offset
+	m_pEntity->SetSlotLocalTM(slot, maOffset);
+
+	//Adds the slot to a vector that holds all the slots
+	HeightVec.push_back(slot);
+	//Sets the last offset to the current
+	HeightLastOffset = HeightOffset;
+
+	LastHeight = GetHeight();
+}
+
+void CModuleComponent::SetWidth() {
+
+	//Set the offset to the last offset + two
+	WidthOffset = WidthLastOffset + Vec3(2, 0, 0);
+	//Create a matrix for the offset
+	Matrix34 maOffset = IDENTITY;
+	//Set the offset
+	maOffset.SetTranslation(WidthOffset);
+	//Gets the string for the model location
+	string sModelPath = Models[GetRandom()];
+	//Get the slot to put it in
+	const int slot = m_pEntity->GetSlotCount() + 1;
+	//Sets the model
+	m_pEntity->LoadGeometry(slot, sModelPath);
+	//Sets the slot offset
+	m_pEntity->SetSlotLocalTM(slot, maOffset);
+
+	//Adds the slot to a vector that holds all the slots
+	WidthVec.push_back(slot);
+	//Set the last offset to the current
+	WidthLastOffset = WidthOffset;
+
+	LastWidth = GetWidth();
+
+}
+
+int CModuleComponent::GetRandom() {
+
+	srand((unsigned int)time(NULL));
+
+	//Get a random number between zero and the last entry to the vector
+	int random = rand() % Models.size();
+	//return the number
+	return random;
+
+}
 
 
