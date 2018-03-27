@@ -32,6 +32,7 @@ public:
 
 	void SetHeight();
 	void SetWidth();
+	void SetRow();
 
 	int GetRandom();
 

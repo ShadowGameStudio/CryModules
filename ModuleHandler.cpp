@@ -20,9 +20,6 @@ CRY_STATIC_AUTO_REGISTER_FUNCTION(&RegisterEntityComponent)
 
 void CModuleComponent::Initialize() {
 
-	LoadGeometry();
-	Physicalize();
-
 }
 
 uint64 CModuleComponent::GetEventMask() const {
@@ -58,6 +55,8 @@ void CModuleComponent::ReflectType(Schematyc::CTypeDesc<CModuleComponent>& desc)
 //Loads the geometry that is needed for the building
 void CModuleComponent::LoadGeometry() {
 	
+	SetRow();
+
 	if (GetHeight() != 0) {
 		
 		if (GetHeight() != LastHeight) {
@@ -186,6 +185,40 @@ void CModuleComponent::SetWidth() {
 	WidthLastOffset = WidthOffset;
 
 	LastWidth = GetWidth();
+
+}
+
+void CModuleComponent::SetRow() {
+
+	//If the width is more than one, continue
+	if (GetWidth() > 1) {
+
+		//Create an total offset from the last ones
+		Vec3 CurrentOffset = WidthLastOffset + HeightLastOffset;
+
+		//Until the value is the same as GetHeight
+		for (int i = 0; i < GetHeight(); i++) {
+			
+			//Add three to the height of the current offset
+			CurrentOffset += Vec3(0, 0, 3);
+			//Create the offset matrix
+			Matrix34 maOffset = IDENTITY;
+			//Set the offset
+			maOffset.SetTranslation(CurrentOffset);
+			//Get random module
+			string sModelPath = Models[GetRandom()];
+			//Create the slot
+			const int slot = m_pEntity->GetSlotCount() + 1;
+			//Load the geometry
+			m_pEntity->LoadGeometry(slot, sModelPath);
+			//Sets the slot offset
+			m_pEntity->SetSlotLocalTM(slot, maOffset);
+			//Adds the slot to a vector
+			HeightVec.push_back(slot);
+
+		}
+
+	}
 
 }
 
