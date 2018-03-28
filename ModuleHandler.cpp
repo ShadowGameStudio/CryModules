@@ -91,8 +91,6 @@ void CModuleComponent::LoadGeometry() {
 	if (GetWidth() != 0) {
 
 		if (GetWidth() != LastWidth) {
-			
-			SetRow();
 
 			if (GetWidth() < LastWidth) {
 
