@@ -22,6 +22,7 @@ CRY_STATIC_AUTO_REGISTER_FUNCTION(&RegisterEntityComponent)
 
 void CModuleComponent::Initialize() {
 
+	//Makes sure that there isn't any slots in the entity
 	m_pEntity->ClearSlots();
 
 }
@@ -62,27 +63,9 @@ void CModuleComponent::LoadGeometry() {
 	if (GetHeight() != 0) {
 		
 		if (GetHeight() != LastHeight) {
-			
-			if (GetHeight() < LastHeight) {
 
-				//Get the slot to free(the last added)
-				int slot = HeightVec.back();
-				//Frees the slot
-				m_pEntity->FreeSlot(slot);
-
-				//Remove the last added slot
-				HeightVec.erase(HeightVec.end());
-				//Set the last height to the current
-				LastHeight = GetHeight();
-
-			}
-			else {
-				
-				//Sets the height
-				SetHeight();
-
-			}
-
+			//Sets the height
+			SetHeight();
 
 		}
 	
@@ -91,25 +74,10 @@ void CModuleComponent::LoadGeometry() {
 	if (GetWidth() != 0) {
 
 		if (GetWidth() != LastWidth) {
-
-			if (GetWidth() < LastWidth) {
-
-				//Get the slot to free(the last added)
-				int slot = WidthVec.back();
-				//Frees the slot
-				m_pEntity->FreeSlot(slot);
-
-				//Remove the last added slot
-				WidthVec.erase(WidthVec.end());
-				//Set the last width to the current
-				LastWidth = GetWidth();
-
-			}
-			else {
-				
-				SetWidth();
-
-			}
+			
+			//Sets the width
+			SetWidth();
+			SetRow();
 
 		}
 
@@ -215,26 +183,30 @@ void CModuleComponent::SetRow() {
 
 		float unitWidth = GetUnitWidth();
 
-		while (unitWidth != 2) {
+		for (int i = 0; i < GetHeight(); i++) {
 
-			Matrix34 mPos = m_pEntity->GetSlotLocalTM(HeightVec[0], false);
-			Vec3 vPos = mPos.GetTranslation();
-			string sModelPath = Models[GetRandom()];
-			int slot = 0;
+			while (unitWidth > 0) {
 
-			if (m_pEntity->GetSlotCount() != 0) {
-				slot = m_pEntity->GetSlotCount() + 1;
+				Matrix34 mPos = m_pEntity->GetSlotLocalTM(HeightVec[i], false);
+				Vec3 vPos = mPos.GetTranslation();
+				string sModelPath = Models[GetRandom()];
+				const int slot = m_pEntity->GetSlotCount();
+
+				Matrix34 maOffset = IDENTITY;
+				maOffset.SetTranslation(Vec3(unitWidth, 0, vPos.z));
+
+				m_pEntity->LoadGeometry(slot, sModelPath);
+				m_pEntity->SetSlotLocalTM(slot, maOffset);
+
+				unitWidth -= 2;
+
+				break;
+
 			}
-
-			Matrix34 maOffset = IDENTITY;
-			maOffset.SetTranslation(Vec3(unitWidth, 0, vPos.z));
-
-			m_pEntity->LoadGeometry(slot, sModelPath);
-			m_pEntity->SetSlotLocalTM(slot, maOffset);
-
-			unitWidth -= 2;
-
 		}
+
+		string out = ToString(m_pEntity->GetSlotCount());
+		CryLogAlways(out);
 
 	}
 
