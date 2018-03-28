@@ -24,6 +24,9 @@ public:
 	int GetWidth() { return GetProperties()->ModuleCountWidth; }
 	int GetHeight() { return GetProperties()->ModuleCountHeight; }
 
+	float GetUnitHeight() { return (float)(GetHeight() * 3); }
+	float GetUnitWidth() { return (float)(GetWidth() * 2) - 2; }
+
 	EBuildingType GetBuildingType() { return GetProperties()->eBuildingType; }
 	EBuildingVersion GetBuildingVersion() { return GetProperties()->eBuildingVersion; }
 
@@ -52,12 +55,6 @@ protected:
 
 	std::vector<int> HeightVec = {};
 	std::vector<int> WidthVec = {};
-
-	Vec3 HeightOffset = Vec3(0, 0, 0);
-	Vec3 HeightLastOffset = Vec3(0, 0, 0);
-
-	Vec3 WidthOffset = Vec3(0, 0, 0);
-	Vec3 WidthLastOffset = Vec3(0, 0, 0);
 
 	int slotCount = 0;
 
