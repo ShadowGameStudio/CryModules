@@ -44,7 +44,8 @@ public:
 
 protected:
 
-	std::vector<XmlString> Models = {};
+	std::vector<XmlString> NewModels = {};
+	std::vector<XmlString> OldModels = {};
 
 	std::vector<int> HeightVec = {};
 	std::vector<int> WidthVec = {};

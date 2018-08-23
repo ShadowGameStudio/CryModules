@@ -40,6 +40,7 @@ void CModuleComponent::ProcessEvent(const SEntityEvent & event) {
 		{
 
 		//When the editor properties has changed, reload the geom and physicalize it
+		GetModelsFromXML();
 		LoadGeometry();
 		Physicalize();
 
@@ -98,26 +99,58 @@ void CModuleComponent::Physicalize() {
 
 void CModuleComponent::GetModelsFromXML() {
 
+	//If it can get the xml file, continue
 	if (XmlNodeRef rootNode = gEnv->pSystem->LoadXmlFromFile("ModelsXML.xml", false)) {
+		//If you want the "new" version of the buildings, continue
+		if (GetProperties()->eBuildingVersion == eBV_New) {
 
-		for (int i = 0, n = rootNode->getChildCount(); i < n; i++) {
+			//Get the NewModels node from the root node
+			XmlNodeRef newNode = rootNode->getChild(0);
 
-			XmlNodeRef childNode = rootNode->getChild(i);
+			//Get every child node of the newNode
+			for (int i = 0, n = newNode->getChildCount(); i < n; i++) {
+				
+				//Get the childnodes for the NewModels node
+				XmlNodeRef childNode = newNode->getChild(i);
+				bool value = false;
 
-			bool value = false;
+				//Get the modelPath attribute from the child
+				XmlString string;
+				if (childNode->getAttr("modelPath", string)) {
+					//Add the path to the vector
+					NewModels.push_back(string);
+				}
+			}
 
-			XmlString string;
-			if (childNode->getAttr("modelPath", string)) {
+		}
+		//Otherwise if the "old" version is selected, continue
+		else if (GetProperties()->eBuildingVersion == eBV_Old) {
+			
+			//Gets the oldModels from the rootNode
+			XmlNodeRef oldNode = rootNode->getChild(1);
 
-				Models.push_back(string);
+			//Get every child of the oldModels
+			for (int i = 0, n = oldNode->getChildCount(); i < n; i++) {
 
+				//Get the childnodes for the oldModels node
+				XmlNodeRef childNode = rootNode->getChild(i);
+				bool value = false;
+
+				//Get the modelPath attribute from the child
+				XmlString string;
+				if (childNode->getAttr("modelPath", string)) {
+					//Adds the path to the vector
+					OldModels.push_back(string);
+				}
 			}
 
 		}
 
 	}
-
-
+	else {
+		//If it can't load the XML, give a warning
+		CryLogAlways("ModelsXML could not be loaded!");
+	}
 
 }
 
@@ -128,7 +161,13 @@ void CModuleComponent::SetHeight() {
 	//Set the slot used for the geometry
 	Matrix34 maOffset = IDENTITY;
 	const Vec3 HeightOffset = Vec3(0, 0, GetUnitHeight());
-	const string sModelPath = Models[GetRandom()];
+	string sModelPath;
+	if (GetProperties()->eBuildingVersion == eBV_New) {
+		sModelPath = NewModels[GetRandom()];
+	}
+	else if (GetProperties()->eBuildingVersion == eBV_Old) {
+		sModelPath = OldModels[GetRandom()];
+	}
 	const int slot = m_pEntity->GetSlotCount();
 	
 	//Apply the offset to the Matrix
@@ -154,7 +193,14 @@ void CModuleComponent::SetWidth() {
 	//Get the model to apply
 	Matrix34 maOffset = IDENTITY;
 	const Vec3 WidthOffset = Vec3(GetUnitWidth(), 0, 0);
-	const string sModelPath = Models[GetRandom()];
+	string sModelPath;
+
+	if (GetProperties()->eBuildingVersion == eBV_New) {
+		sModelPath = NewModels[GetRandom()];
+	}
+	else if (GetProperties()->eBuildingVersion == eBV_Old) {
+		sModelPath = OldModels[GetRandom()];
+	}
 
 	//Apply the offset to the Matrix
 	maOffset.SetTranslation(WidthOffset);
@@ -216,7 +262,15 @@ void CModuleComponent::SetRow() {
 
 				Matrix34 mPos = m_pEntity->GetSlotLocalTM(HeightVec[i], false);
 				Vec3 vPos = mPos.GetTranslation();
-				string sModelPath = Models[GetRandom()];
+				string sModelPath;
+
+				if (GetProperties()->eBuildingVersion == eBV_New) {
+					sModelPath = NewModels[GetRandom()];
+				}
+				else if (GetProperties()->eBuildingVersion == eBV_Old) {
+					sModelPath = OldModels[GetRandom()];
+				}
+
 				const int slot = m_pEntity->GetSlotCount();
 
 				Matrix34 maOffset = IDENTITY;
@@ -244,9 +298,19 @@ int CModuleComponent::GetRandom() {
 	srand((unsigned int)time(NULL));
 
 	//Get a random number between zero and the last entry to the vector
-	int random = rand() % Models.size();
+	if (GetProperties()->eBuildingVersion == eBV_New) {
+		int random = rand() % NewModels.size();
+
+		return random;
+	}
+	else if (GetProperties()->eBuildingVersion == eBV_Old) {
+		int random = rand() % OldModels.size();
+
+		return random;
+	}
+
 	//return the number
-	return random;
+	return -1;
 
 }
 
