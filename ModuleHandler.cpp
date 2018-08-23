@@ -99,56 +99,73 @@ void CModuleComponent::Physicalize() {
 
 void CModuleComponent::GetModelsFromXML() {
 
-	//If it can get the xml file, continue
+	//If it can get the XML file, continue
 	if (XmlNodeRef rootNode = gEnv->pSystem->LoadXmlFromFile("ModelsXML.xml", false)) {
-		//If you want the "new" version of the buildings, continue
-		if (GetProperties()->eBuildingVersion == eBV_New) {
 
-			//Get the NewModels node from the root node
-			XmlNodeRef newNode = rootNode->getChild(0);
+		//Get every child from the root node
+		for (int i = 0, n = rootNode->getChildCount(); i < n; i++) {
 
-			//Get every child node of the newNode
-			for (int i = 0, n = newNode->getChildCount(); i < n; i++) {
-				
-				//Get the childnodes for the NewModels node
-				XmlNodeRef childNode = newNode->getChild(i);
-				bool value = false;
+			//Get the child
+			XmlNodeRef childNode = rootNode->getChild(i);
+			bool value = false;
 
-				//Get the modelPath attribute from the child
-				XmlString string;
-				if (childNode->getAttr("modelPath", string)) {
-					//Add the path to the vector
-					NewModels.push_back(string);
+			//Get the modelVersion attribute
+			XmlString modelVer;
+			if (childNode->getAttr("modelVersion", modelVer)) {
+
+				//If the modelVer attribute and the building version is "New"
+				if (modelVer == "New" || GetProperties()->eBuildingVersion == eBV_New) {
+					
+					//Get the modelType attribute
+					XmlString modelType;
+					if (childNode->getAttr("modelType", modelType)) {
+						
+						//If the modelType attribute and the building type is "ApartmentBuilding"
+						if (modelType == "apartmentBuilding" || GetProperties()->eBuildingType == eBT_ApartmentBuilding) {
+
+							//Get the modelPath attribute
+							XmlString modelPath;
+							if (childNode->getAttr("modelPath", modelPath)) {
+								//Add the model path to the vector
+								Models.push_back(modelPath);
+
+							}
+
+						}
+
+					}
+
 				}
-			}
+				//If the modelVer instead is old, continue
+				else if (modelVer == "Old" || GetProperties()->eBuildingVersion == eBV_New) {
 
-		}
-		//Otherwise if the "old" version is selected, continue
-		else if (GetProperties()->eBuildingVersion == eBV_Old) {
-			
-			//Gets the oldModels from the rootNode
-			XmlNodeRef oldNode = rootNode->getChild(1);
+					//Get the modelType
+					XmlString modelType;
+					if (childNode->getAttr("modelType", modelType)) {
 
-			//Get every child of the oldModels
-			for (int i = 0, n = oldNode->getChildCount(); i < n; i++) {
+						//If the modelType and the BuildingType is apartmentBuilding, continue
+						if (modelType == "apartmentBuilding" || GetProperties()->eBuildingType == eBT_ApartmentBuilding) {
 
-				//Get the childnodes for the oldModels node
-				XmlNodeRef childNode = rootNode->getChild(i);
-				bool value = false;
+							//Get the modelPath
+							XmlString modelPath;
+							if (childNode->getAttr("modelPath", modelPath)) {
+								//Add the path to the vector
+								Models.push_back(modelPath);
+							}
 
-				//Get the modelPath attribute from the child
-				XmlString string;
-				if (childNode->getAttr("modelPath", string)) {
-					//Adds the path to the vector
-					OldModels.push_back(string);
+						}
+
+					}
+
 				}
+
 			}
 
 		}
 
 	}
 	else {
-		//If it can't load the XML, give a warning
+		//If the file could not be loaded, give a warning
 		CryLogAlways("ModelsXML could not be loaded!");
 	}
 
@@ -161,13 +178,7 @@ void CModuleComponent::SetHeight() {
 	//Set the slot used for the geometry
 	Matrix34 maOffset = IDENTITY;
 	const Vec3 HeightOffset = Vec3(0, 0, GetUnitHeight());
-	string sModelPath;
-	if (GetProperties()->eBuildingVersion == eBV_New) {
-		sModelPath = NewModels[GetRandom()];
-	}
-	else if (GetProperties()->eBuildingVersion == eBV_Old) {
-		sModelPath = OldModels[GetRandom()];
-	}
+	const string sModelPath = Models[GetRandom()];
 	const int slot = m_pEntity->GetSlotCount();
 	
 	//Apply the offset to the Matrix
@@ -193,14 +204,7 @@ void CModuleComponent::SetWidth() {
 	//Get the model to apply
 	Matrix34 maOffset = IDENTITY;
 	const Vec3 WidthOffset = Vec3(GetUnitWidth(), 0, 0);
-	string sModelPath;
-
-	if (GetProperties()->eBuildingVersion == eBV_New) {
-		sModelPath = NewModels[GetRandom()];
-	}
-	else if (GetProperties()->eBuildingVersion == eBV_Old) {
-		sModelPath = OldModels[GetRandom()];
-	}
+	const string sModelPath = Models[GetRandom()];
 
 	//Apply the offset to the Matrix
 	maOffset.SetTranslation(WidthOffset);
@@ -262,14 +266,7 @@ void CModuleComponent::SetRow() {
 
 				Matrix34 mPos = m_pEntity->GetSlotLocalTM(HeightVec[i], false);
 				Vec3 vPos = mPos.GetTranslation();
-				string sModelPath;
-
-				if (GetProperties()->eBuildingVersion == eBV_New) {
-					sModelPath = NewModels[GetRandom()];
-				}
-				else if (GetProperties()->eBuildingVersion == eBV_Old) {
-					sModelPath = OldModels[GetRandom()];
-				}
+				const string sModelPath = Models[GetRandom()];
 
 				const int slot = m_pEntity->GetSlotCount();
 
@@ -298,19 +295,10 @@ int CModuleComponent::GetRandom() {
 	srand((unsigned int)time(NULL));
 
 	//Get a random number between zero and the last entry to the vector
-	if (GetProperties()->eBuildingVersion == eBV_New) {
-		int random = rand() % NewModels.size();
-
-		return random;
-	}
-	else if (GetProperties()->eBuildingVersion == eBV_Old) {
-		int random = rand() % OldModels.size();
-
-		return random;
-	}
+	int random = rand() % Models.size();
 
 	//return the number
-	return -1;
+	return random;
 
 }
 
