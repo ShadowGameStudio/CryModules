@@ -32,6 +32,7 @@ public:
 
 	void LoadGeometry();
 	void Physicalize();
+	void GetModelsFromXML();
 
 	void SetHeight();
 	void SetWidth();
@@ -43,15 +44,7 @@ public:
 
 protected:
 
-	std::vector<string> Models = 
-	{ 
-		"Objects/Modules/apartment/wall_budge_window.cgf", 
-		"Objects/Modules/apartment/wall.cgf",
-		"Objects/Modules/apartment/wall_buldge.cgf",
-		"Objects/Modules/apartment/window_wide.cgf",
-		"Objects/Modules/apartment/window_thin.cgf",
-
-	};
+	std::vector<XmlString> Models = {};
 
 	std::vector<int> HeightVec = {};
 	std::vector<int> WidthVec = {};

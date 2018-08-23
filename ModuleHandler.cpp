@@ -7,6 +7,7 @@
 #include <CryEntitySystem\IEntityComponent.h>
 #include <CrySchematyc/Env/IEnvRegistrar.h>
 #include <CrySchematyc\Env\Elements\EnvComponent.h>
+#include <CrySystem/ISystem.h>
 
 static void RegisterEntityComponent(Schematyc::IEnvRegistrar& registrar) {
 	Schematyc::CEnvRegistrationScope scope = registrar.Scope(IEntity::GetEntityScopeGUID());
@@ -24,6 +25,7 @@ void CModuleComponent::Initialize() {
 
 	//Makes sure that there isn't any slots in the entity
 	m_pEntity->ClearSlots();
+	GetModelsFromXML();
 
 }
 
@@ -91,6 +93,31 @@ void CModuleComponent::Physicalize() {
 	SEntityPhysicalizeParams physParams;
 	physParams.type = PE_STATIC;
 	m_pEntity->Physicalize(physParams);
+
+}
+
+void CModuleComponent::GetModelsFromXML() {
+
+	if (XmlNodeRef rootNode = gEnv->pSystem->LoadXmlFromFile("ModelsXML.xml", false)) {
+
+		for (int i = 0, n = rootNode->getChildCount(); i < n; i++) {
+
+			XmlNodeRef childNode = rootNode->getChild(i);
+
+			bool value = false;
+
+			XmlString string;
+			if (childNode->getAttr("modelPath", string)) {
+
+				Models.push_back(string);
+
+			}
+
+		}
+
+	}
+
+
 
 }
 
@@ -178,7 +205,7 @@ void CModuleComponent::SetWidth() {
 
 void CModuleComponent::SetRow() {
 
-	//If the module width is creater than one, continue
+	//If the module width is greater than one, continue
 	if (GetWidth() >= 1 && GetHeight() >= 1) {
 
 		float unitWidth = GetUnitWidth();
