@@ -55,8 +55,8 @@ protected:
 	int LastWidth = 0;
 	int LastHeight = 0;
 
-	string sModelType;
-	string sModelVersion;
+	XmlString sModelType;
+	XmlString sModelVersion;
 
 	SProperties sProperties;
 

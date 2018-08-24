@@ -99,6 +99,7 @@ void CModuleComponent::Physicalize() {
 
 }
 
+//Gets all of the models from an XML
 void CModuleComponent::GetModelsFromXML() {
 
 	//If it can get the XML file, continue
@@ -151,6 +152,7 @@ void CModuleComponent::GetModelsFromXML() {
 
 }
 
+//Sets the setting for the buildings
 void CModuleComponent::SetBuildingSettings() {
 
 	if (GetProperties()->eModelType == eMT_ApartmentBuilding) {
@@ -166,6 +168,7 @@ void CModuleComponent::SetBuildingSettings() {
 
 }
 
+//Sets the height of the building
 void CModuleComponent::SetHeight() {
 
 	//Matrix and Vector3 for the slot offset
@@ -193,6 +196,7 @@ void CModuleComponent::SetHeight() {
 	CryLogAlways(out);
 }
 
+//Sets the width of the building
 void CModuleComponent::SetWidth() {
 
 	//Matrix and Vector3 for the slot offset
@@ -248,6 +252,7 @@ void CModuleComponent::SetWidth() {
 
 }
 
+//Fills all of the rows with modesl
 void CModuleComponent::SetRow() {
 
 	//If the module width is greater than one, continue
@@ -285,6 +290,7 @@ void CModuleComponent::SetRow() {
 
 }
 
+//Gets a random number for what model to choose
 int CModuleComponent::GetRandom() {
 
 	srand((unsigned int)time(NULL));
