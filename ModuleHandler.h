@@ -27,12 +27,13 @@ public:
 	float GetUnitHeight() { return (float)(GetHeight() * 3); }
 	float GetUnitWidth() { return (float)(GetWidth() * 2) - 2; }
 
-	EBuildingType GetBuildingType() { return GetProperties()->eBuildingType; }
-	EBuildingVersion GetBuildingVersion() { return GetProperties()->eBuildingVersion; }
+	EModelType GetBuildingType() { return GetProperties()->eModelType; }
+	EModelVersion GetBuildingVersion() { return GetProperties()->eModelVersion; }
 
 	void LoadGeometry();
 	void Physicalize();
 	void GetModelsFromXML();
+	void SetBuildingSettings();
 
 	void SetHeight();
 	void SetWidth();
@@ -53,6 +54,9 @@ protected:
 
 	int LastWidth = 0;
 	int LastHeight = 0;
+
+	string sModelType;
+	string sModelVersion;
 
 	SProperties sProperties;
 

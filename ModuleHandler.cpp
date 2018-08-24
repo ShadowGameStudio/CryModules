@@ -25,6 +25,7 @@ void CModuleComponent::Initialize() {
 
 	//Makes sure that there isn't any slots in the entity
 	m_pEntity->ClearSlots();
+	SetBuildingSettings();
 	GetModelsFromXML();
 
 }
@@ -40,6 +41,7 @@ void CModuleComponent::ProcessEvent(const SEntityEvent & event) {
 		{
 
 		//When the editor properties has changed, reload the geom and physicalize it
+		SetBuildingSettings();
 		GetModelsFromXML();
 		LoadGeometry();
 		Physicalize();
@@ -114,14 +116,14 @@ void CModuleComponent::GetModelsFromXML() {
 			if (childNode->getAttr("modelVersion", modelVer)) {
 
 				//If the modelVer attribute and the building version is "New"
-				if (modelVer == "New" || GetProperties()->eBuildingVersion == eBV_New) {
+				if (modelVer == sModelVersion) {
 					
 					//Get the modelType attribute
 					XmlString modelType;
 					if (childNode->getAttr("modelType", modelType)) {
 						
 						//If the modelType attribute and the building type is "ApartmentBuilding"
-						if (modelType == "apartmentBuilding" || GetProperties()->eBuildingType == eBT_ApartmentBuilding) {
+						if (modelType == sModelType) {
 
 							//Get the modelPath attribute
 							XmlString modelPath;
@@ -129,28 +131,6 @@ void CModuleComponent::GetModelsFromXML() {
 								//Add the model path to the vector
 								Models.push_back(modelPath);
 
-							}
-
-						}
-
-					}
-
-				}
-				//If the modelVer instead is old, continue
-				else if (modelVer == "Old" || GetProperties()->eBuildingVersion == eBV_New) {
-
-					//Get the modelType
-					XmlString modelType;
-					if (childNode->getAttr("modelType", modelType)) {
-
-						//If the modelType and the BuildingType is apartmentBuilding, continue
-						if (modelType == "apartmentBuilding" || GetProperties()->eBuildingType == eBT_ApartmentBuilding) {
-
-							//Get the modelPath
-							XmlString modelPath;
-							if (childNode->getAttr("modelPath", modelPath)) {
-								//Add the path to the vector
-								Models.push_back(modelPath);
 							}
 
 						}
@@ -167,6 +147,21 @@ void CModuleComponent::GetModelsFromXML() {
 	else {
 		//If the file could not be loaded, give a warning
 		CryLogAlways("ModelsXML could not be loaded!");
+	}
+
+}
+
+void CModuleComponent::SetBuildingSettings() {
+
+	if (GetProperties()->eModelType == eMT_ApartmentBuilding) {
+		sModelType = "apartmentBuilding";
+	}
+
+	if (GetProperties()->eModelVersion == eMV_New) {
+		sModelVersion = "New";
+	}
+	else if (GetProperties()->eModelVersion == eMV_Old) {
+		sModelVersion = "Old";
 	}
 
 }
