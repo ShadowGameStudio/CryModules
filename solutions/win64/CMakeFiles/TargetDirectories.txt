@@ -1,0 +1,9 @@
+C:/Programing/CryModules/solutions/win64/CMakeFiles/Plugin.dir
+C:/Programing/CryModules/solutions/win64/CMakeFiles/GameLauncher.dir
+C:/Programing/CryModules/solutions/win64/CMakeFiles/INSTALL.dir
+C:/Programing/CryModules/solutions/win64/CMakeFiles/Editor.dir
+C:/Programing/CryModules/solutions/win64/CMakeFiles/GameServer.dir
+C:/Programing/CryModules/solutions/win64/CMakeFiles/ALL_BUILD.dir
+C:/Programing/CryModules/solutions/win64/CMakeFiles/ZERO_CHECK.dir
+C:/Programing/CryModules/solutions/win64/CRYENGINE/CMakeFiles/INSTALL.dir
+C:/Programing/CryModules/solutions/win64/CRYENGINE/CMakeFiles/ALL_BUILD.dir

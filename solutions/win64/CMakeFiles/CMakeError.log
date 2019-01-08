@@ -1,0 +1,42 @@
+Determining if the function stpcpy exists failed with the following output:
+Change Dir: C:/Programing/CryModules/solutions/win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/MSBuild.exe" "cmTC_a8a13.vcxproj" "/p:Configuration=Debug" "/p:VisualStudioVersion=15.0"
+Microsoft (R) Build Engine version 15.9.21+g9802d43bc3 for .NET Framework
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Build started 2019-01-08 21:38:56.
+Project "C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\cmTC_a8a13.vcxproj" on node 1 (default targets).
+PrepareForBuild:
+  Creating directory "cmTC_a8a13.dir\Debug\".
+  Creating directory "C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\Debug\".
+  Creating directory "cmTC_a8a13.dir\Debug\cmTC_a8a13.tlog\".
+InitializeBuildStatus:
+  Creating "cmTC_a8a13.dir\Debug\cmTC_a8a13.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+ClCompile:
+  C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\bin\HostX86\x64\CL.exe /c /Zi /W3 /WX- /diagnostics:classic /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=stpcpy /D DEBUG /D _DEBUG /D _WIN32 /D _WIN64 /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a8a13.dir\Debug\\" /Fd"cmTC_a8a13.dir\Debug\vc141.pdb" /Gd /TC /FC /errorReport:queue  /Zo "C:\Program Files (x86)\Crytek\CRYENGINE Launcher\Crytek\CRYENGINE_5.5\Tools\CMake\Win32\share\cmake-3.10\Modules\CheckFunctionExists.c"
+  Microsoft (R) C/C++ Optimizing Compiler Version 19.16.27025.1 for x64
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  cl /c /Zi /W3 /WX- /diagnostics:classic /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=stpcpy /D DEBUG /D _DEBUG /D _WIN32 /D _WIN64 /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a8a13.dir\Debug\\" /Fd"cmTC_a8a13.dir\Debug\vc141.pdb" /Gd /TC /FC /errorReport:queue  /Zo "C:\Program Files (x86)\Crytek\CRYENGINE Launcher\Crytek\CRYENGINE_5.5\Tools\CMake\Win32\share\cmake-3.10\Modules\CheckFunctionExists.c"
+  CheckFunctionExists.c
+  
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\bin\HostX86\x64\link.exe /ERRORREPORT:QUEUE /OUT:"C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\Debug\cmTC_a8a13.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programing/CryModules/solutions/win64/CMakeFiles/CMakeTmp/Debug/cmTC_a8a13.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programing/CryModules/solutions/win64/CMakeFiles/CMakeTmp/Debug/cmTC_a8a13.lib" /MACHINE:X64  /machine:x64 cmTC_a8a13.dir\Debug\CheckFunctionExists.obj
+CheckFunctionExists.obj : error LNK2019: unresolved external symbol stpcpy referenced in function main [C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\cmTC_a8a13.vcxproj]
+C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\Debug\cmTC_a8a13.exe : fatal error LNK1120: 1 unresolved externals [C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\cmTC_a8a13.vcxproj]
+Done Building Project "C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\cmTC_a8a13.vcxproj" (default targets) -- FAILED.
+
+Build FAILED.
+
+"C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\cmTC_a8a13.vcxproj" (default target) (1) ->
+(Link target) -> 
+  CheckFunctionExists.obj : error LNK2019: unresolved external symbol stpcpy referenced in function main [C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\cmTC_a8a13.vcxproj]
+  C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\Debug\cmTC_a8a13.exe : fatal error LNK1120: 1 unresolved externals [C:\Programing\CryModules\solutions\win64\CMakeFiles\CMakeTmp\cmTC_a8a13.vcxproj]
+
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:00.70
+
+

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Programing\CryModules\Code\StdAfx.cpp" />
+    <ClCompile Include="C:\Programing\CryModules\solutions\win64\Code_uber.cpp">
+      <Filter>UBER FILES</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Programing\CryModules\Code\Plugin.cpp" />
+    <ClInclude Include="C:\Programing\CryModules\Code\Plugin.h" />
+    <ClInclude Include="C:\Programing\CryModules\Code\StdAfx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Programing\CryModules\Code\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C:\Programing\CryModules\solutions\win64\Plugin.autogen.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="UBER FILES">
+      <UniqueIdentifier>{8284B44B-D4E7-3854-925F-8309AD52DE2A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{2AD6E941-4CAC-388A-88AE-6BB838B762BE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
